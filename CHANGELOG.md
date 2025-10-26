@@ -1,11 +1,18 @@
 # Changelog
 
+## [1.1.2]
+### 🪲 Bug Fixes
+- fix images off center on x axis
+
+### 🏛️ Structure Changes
+- update example config file
+
 ## [1.1.1] - 2025-10-24
 ### 🪲 Bug Fixes
 - fix Ken Burns effect bouncing
 - fix images without Ken Burns effect stretched
 - fix not showing video files
-- fix vdeo files changing output size
+- fix video files changing output size
 
 ### 🏛️ Structure Changes
 - broken up monolithic functions in motion_pilliw.py and video_composer.py

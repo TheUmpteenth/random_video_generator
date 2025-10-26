@@ -146,6 +146,7 @@ def return_single_frame(img_path: str, size: Tuple[int, int], duration: float, f
         src_w, src_h = src.size
         target_w, target_h = size
         
+        # Upscale images smaller than final video size 
         src, src_w, src_h, target_w, target_h = upscale(src, src_w, src_h, target_w, target_h, max_factor)
 
         # Background for padding/blur if needed
@@ -161,8 +162,12 @@ def return_single_frame(img_path: str, size: Tuple[int, int], duration: float, f
         x2 = x1 + target_w
         y2 = y1 + target_h
         
-        paste_x = (target_w - src_w) // 2
-        paste_y = (target_h - src_h) // 2
+        # Arrange for images smaller than final video size to be centered
+        paste_x = paste_y = 0
+        if target_w > src_w:
+            paste_x = (target_w - src_w) // 2
+        if target_h > src_h:
+            paste_y = (target_h - src_h) // 2
 
         # Clamp box to source bounds
         if x1 < 0:
@@ -178,9 +183,10 @@ def return_single_frame(img_path: str, size: Tuple[int, int], duration: float, f
         crop = src.crop((x1, y1, x2, y2))
         logging.info("paste, src_h = %d, target_h = %d, diff = %d, half_diff = %d", src_h, target_h, target_h - src_h, (target_h - src_h) // 2)
         
+        # Place image on backdrop
         if bg is not None:
             composed = bg.copy()
-            composed.paste(crop, (0, paste_y), None)
+            composed.paste(crop, (paste_x, paste_y), None)
             crop = composed
         
         frame = np.array(crop.convert("RGB"))
