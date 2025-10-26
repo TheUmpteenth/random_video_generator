@@ -70,6 +70,7 @@ def load_config(path: str) -> Dict:
     height = int(output.get("height", 1920))
     fps = int(output.get("fps", 30))
     codec = output.get("codec", "libx264")
+    threads = output.get("threads", 4)
     
     # Motion settings (optional)
     motion_raw = raw.get("motion", {})
@@ -77,11 +78,13 @@ def load_config(path: str) -> Dict:
         "enabled": bool(motion_raw.get("enabled", False)),
         "probability": float(motion_raw.get("probability", 0.7)),
         "zoom_range": motion_raw.get("zoom_range", [1.0, 1.1]),
-        "pan_range": float(motion_raw.get("pan_range", 0.05)),
-        "direction_mode": motion_raw.get("direction_mode", "random"),
-        "rotation_range": float(motion_raw.get("rotation_range", 0.0)),
+        "zoom_direction_mode": motion_raw.get("zoom_direction_mode", "random"),
+        "pan_min": float(motion_raw.get("pan_min", 0.03)),
+        "pan_max": float(motion_raw.get("pan_max", 0.06)),
+        "pan_direction_mode": motion_raw.get("pan_direction_mode", "random"),
+        "rotation_range": float(motion_raw.get("rotation_range", 0.2)),
+        "max_factor": float(motion_raw.get("max_factor", 1.1)),
     }
-
 
     normalized = {
         "audio_path": audio_path,
@@ -97,7 +100,7 @@ def load_config(path: str) -> Dict:
             "end_duration": end_duration,
             "max_videos": max_videos,
         },
-        "output": {"file": out_file, "width": width, "height": height, "fps": fps, "codec": codec},
+        "output": {"file": out_file, "width": width, "height": height, "fps": fps, "codec": codec, "threads": threads},
         "motion": motion,
     }
     return normalized

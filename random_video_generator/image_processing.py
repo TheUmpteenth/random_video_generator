@@ -23,3 +23,13 @@ def preprocess_image(src: str, dest: str, size: Tuple[int, int]) -> None:
         bottom = top + target_h
         im_cropped = im_resized.crop((left, top, right, bottom))
         im_cropped.save(dest, format="PNG")
+
+def load_image(src: str, dest: str) -> None:
+    """
+    Aspect-fill and center-crop src image to exact size, saving PNG to dest.
+    Uses Pillow with Image.Resampling.LANCZOS for good quality.
+    """
+    with Image.open(src) as im:
+        if im.mode not in ("RGB", "RGBA"):
+            im = im.convert("RGB")
+        im.save(dest, format="PNG")

@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1] - 2025-10-24
+### 🪲 Bug Fixes
+- fix Ken Burns effect bouncing
+- fix images without Ken Burns effect stretched
+- fix not showing video files
+- fix vdeo files changing output size
+
+### 🏛️ Structure Changes
+- broken up monolithic functions in motion_pilliw.py and video_composer.py
+- added some configuration values, including number of threads, seperate zoom and pan direction modes and max upscaling factor for images.
+
+
 ## [1.1.0] - 2025-10-23
 ### 🎉 Major Milestone
 This release represents the first **stable, modular build** of the Random Video Generator project.  

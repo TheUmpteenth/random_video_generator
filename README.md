@@ -49,12 +49,23 @@ Organize your content like this:
 ---
 
 ### 2️⃣ Create a `config.json`
-Example:
+
+## ✅ Example
+
 ```json
 {
-  "audio": { "path": "E:/Bruach/audio/music_track.mp3" },
-  "images": { "path": "E:/Bruach/Marketing Photos" },
-  "videos": { "path": "E:/Bruach/Clips" },
+  "audio": {
+    "path": "E:/Bruach/audio/music_track.mp3"
+  },
+
+  "images": {
+    "path": "E:/Bruach/Marketing Photos"
+  },
+
+  "videos": {
+    "path": "E:/Bruach/Clips"
+  },
+
   "clips": {
     "min_still": 2.5,
     "desired_still": 3.0,
@@ -65,26 +76,121 @@ Example:
     "end_duration": 2.5,
     "max_videos": 1
   },
+
   "motion": {
     "enabled": true,
     "probability": 0.8,
     "zoom_range": [1.0, 1.12],
-    "pan_range": 0.06,
-    "direction_mode": "random",
+    "zoom_direction_mode": "random",
+    "pan_min": 0.03,
+    "pan_max": 0.06,
+    "pan_direction_mode": "random",
     "rotation_range": 1.5,
-    "ease_fraction": 0.12
+    "max_factor": 1.1
   },
+
   "output": {
     "file": "E:/Bruach/Output/final_video.mp4",
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "codec": "libx264"
+    "codec": "libx264",
+    "threads": 4
   }
 }
 ```
 
-💡 **Tip:** Use forward slashes (`/`) in paths or escape backslashes (`\\`) to avoid JSON parse errors.
+---
+
+## 🧠 Section Details
+
+### 🎵 `audio`
+| Key | Type | Description |
+|-----|------|--------------|
+| `path` | string | Path to the background audio track (MP3/WAV). Must exist. |
+
+---
+
+### 🖼️ `images`
+| Key | Type | Description |
+|-----|------|--------------|
+| `path` | string | Directory containing still images to use in the video. Must exist. |
+
+---
+
+### 🎞️ `videos`
+| Key | Type | Description |
+|-----|------|--------------|
+| `path` | string | Directory containing short video clips to include between stills. Optional — if missing, videos are skipped. |
+
+---
+
+### 🧩 `clips`
+Controls how stills and short clips are arranged on the timeline.
+
+| Key | Type | Description |
+|-----|------|--------------|
+| `min_still` | float | Minimum still duration (seconds). Must be > 0. |
+| `desired_still` | float | Target still duration (seconds). |
+| `max_still` | float | Maximum still duration (seconds). Must satisfy `min_still <= desired_still <= max_still`. |
+| `start_still` | string | Optional image shown before the main sequence. |
+| `start_duration` | float | Duration of start still (seconds). |
+| `end_still` | string | Optional image shown after the main sequence. |
+| `end_duration` | float | Duration of end still (seconds). |
+| `max_videos` | int | Maximum number of video clips to include between stills. |
+
+---
+
+### 🎥 `motion` (Ken Burns effect)
+Controls panning, zooming, and rotation applied to still images.
+
+If `enabled` is `false`, stills remain static.
+
+| Key | Type | Description | Default |
+|-----|------|--------------|----------|
+| `enabled` | bool | Enable/disable Ken Burns motion. | `false` |
+| `probability` | float | Probability that a still will receive motion (0–1). | `0.7` |
+| `zoom_range` | [float, float] | Start/end zoom factors. | `[1.0, 1.1]` |
+| `zoom_direction_mode` | string | `"in"`, `"out"`, or `"random"`. | `"random"` |
+| `pan_min` | float | Minimum pan offset as fraction of image width/height. | `0.03` |
+| `pan_max` | float | Maximum pan offset as fraction of image width/height. | `0.06` |
+| `pan_direction_mode` | string | `"horizontal"`, `"vertical"`, or `"random"`. | `"random"` |
+| `rotation_range` | float | Max rotation angle (degrees). | `0.2` |
+| `max_factor` | float | Optional safety upscaling factor for still images. | `1.1` |
+
+---
+
+### 📤 `output`
+Controls final video rendering.
+
+| Key | Type | Description | Default |
+|-----|------|--------------|----------|
+| `file` | string | Output video file path (MP4 recommended). | — |
+| `width` | int | Output frame width (pixels). | `1080` |
+| `height` | int | Output frame height (pixels). | `1920` |
+| `fps` | int | Frames per second. | `30` |
+| `codec` | string | Video codec for MoviePy (usually `"libx264"`). | `"libx264"` |
+| `threads` | int | Number of encoding threads to use. | `4` |
+
+---
+
+### ⚠️ Windows JSON tip
+If you’re on Windows, **escape backslashes** in paths, or use forward slashes:
+
+✅ Correct:
+```json
+"C:/Brand/intro.png"
+```
+or
+```json
+"C:\\Users\\User\\Videos\\file.mp4"
+```
+
+❌ Incorrect:
+```json
+"C:\Users\User\Videos\file.mp4"
+```
+
 
 ---
 

@@ -2,7 +2,7 @@
 from __future__ import annotations
 import logging
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 
 def setup_logging(verbosity: str = "info"):
     """Configure global logging level and format."""
